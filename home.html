@@ -1,52 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <link rel="stylesheet" href="styles.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta charset="utf-8">
-        </style>
-        <center>
-            <h2>Home</h2>
-        </center>
-        <div class="navbar">
-        
-            <button type="button"
-                    onclick="document.location='home.html'">Home</button>
-            <button type="button"
-                    onclick="document.location='createRSO.html'">Register New Organization</button>
-            <button type="button"
-                    onclick="document.location='createEvent.html'">Create New Event</button>
-            <button type="button"
-                    onclick="document.location='index.html'">Log out</button>
-        </div>
-    </head>
-    <body>
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Home</title>
+</head>
+<body>
+    <center>
+        <h2>Home</h2>
+    </center>
+    <div class="navbar">
+        <button type="button" onclick="document.location='home.html'">Home</button>
+        <button type="button" onclick="document.location='createRSO.html'">Register New Organization</button>
+        <button type="button" onclick="document.location='createEvent.html'">Create New Event</button>
+        <button type="button" onclick="document.location='index.html'">Log out</button>
+    </div>
 
-        <center>
-            <h3>Current Events</h3>
-        </center>
+    <center>
+        <h3>Current Events</h3>
+    </center>
     <table>
         <thead>
             <tr>
                 <th>Event Name</th>
                 <th>Date</th>
-                <!-- Add more table headings as needed -->
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Event 1</td>
-                <td>Date 1</td>
-                <!-- Add more table cells with event details as needed -->
-            </tr>
-            <tr>
-                <td>Event 2</td>
-                <td>Date 2</td>
-                <!-- Add more table cells with event details as needed -->
-            </tr>
-            <!-- Add more table rows with event details as needed -->
+            <?php
+            // Connect to your database
+            $conn = mysqli_connect("localhost", "username", "password", "database");
+
+            // Check connection
+            if (!$conn) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+
+            // SQL query to retrieve events
+            $sql = "SELECT event_name, event_date FROM events";
+
+            // Execute query
+            $result = mysqli_query($conn, $sql);
+
+            // Check if there are any rows returned
+            if (mysqli_num_rows($result) > 0) {
+                // Loop through each row and display event details in table rows
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<tr>";
+                    echo "<td>" . $row["event_name"] . "</td>";
+                    echo "<td>" . $row["event_date"] . "</td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='2'>No events found</td></tr>";
+            }
+
+            // Close database connection
+            mysqli_close($conn);
+            ?>
         </tbody>
     </table>
-
-    </body>
-    </html>
+</body>
+</html>
+<!--
+    Replace "localhost", "username", "password", 
+    and "database" with your actual database connection details. 
+    This example assumes you have a table named events with columns event_name and event_date in your database.
+-->
