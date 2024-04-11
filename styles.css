@@ -17,6 +17,7 @@ div {
     padding-top: 10px;
     padding-bottom: 10px;
     justify-content: center;
+    background: linear-gradient(#0E2954,#1F6E8C)
 }
 .centered {
     display: flex;
@@ -28,12 +29,13 @@ div {
     
 }
 .box1 {
-    width: 300px;
+    width: 400px;
     height: fit-content;
     border-radius: 20px;
     padding-top: 20px;
     padding-bottom: 20px;
-    
+    background: linear-gradient(#0E2954,#1F6E8C);
+    justify-content: center;
 }
 textarea {
     font-family: Verdana, Geneva, Tahoma, sans-serif ;
