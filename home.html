@@ -62,7 +62,7 @@
     </table>
 
     <script>
-        // AJAX request to fetch events from the server
+        // Function to fetch events from the server
         function fetchEvents() {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
@@ -80,12 +80,46 @@
         function addJoinButtons() {
             var eventRows = document.querySelectorAll("#eventsTableBody tr");
             eventRows.forEach(function(row) {
-                var joinButtonCell = row.insertCell(-1); // Insert cell for join button at the end
-                var joinButton = document.createElement("button"); // Create a button
+                var actionsCell = row.insertCell(-1); // Insert cell for actions at the end
+                var joinButton = document.createElement("button"); // Create a button for joining
                 joinButton.textContent = "Join"; // Set button text
-                joinButton.onclick = function() { alert("Join " + row.cells[0].textContent); }; // Define button action
-                joinButtonCell.appendChild(joinButton); // Add button to cell
+                joinButton.onclick = function() { joinEvent(row.cells[0].textContent); }; // Define button action
+                actionsCell.appendChild(joinButton); // Add join button to cell
+    
+                var commentButton = document.createElement("button"); // Create a button for adding comments
+                commentButton.textContent = "Comment"; // Set button text
+                commentButton.onclick = function() { addComment(row.cells[0].textContent); }; // Define button action
+                actionsCell.appendChild(commentButton); // Add comment button to cell
+    
+                var deleteButton = document.createElement("button"); // Create a button for deleting comments
+                deleteButton.textContent = "Delete Comment"; // Set button text
+                deleteButton.onclick = function() { deleteComment(row.cells[0].textContent); }; // Define button action
+                actionsCell.appendChild(deleteButton); // Add delete comment button to cell
             });
+        }
+    
+        // Function to join an event
+        function joinEvent(eventName) {
+            alert("Join " + eventName);
+            // Implement join event functionality here
+        }
+    
+        // Function to add a comment for an event
+        function addComment(eventName) {
+            var comment = prompt("Enter your comment for " + eventName + ":");
+            if (comment) {
+                // Implement add comment functionality here
+                alert("Comment added: " + comment);
+            }
+        }
+    
+        // Function to delete a comment for an event
+        function deleteComment(eventName) {
+            var commentToDelete = prompt("Enter the comment you want to delete for " + eventName + ":");
+            if (commentToDelete) {
+                // Implement delete comment functionality here
+                alert("Comment deleted: " + commentToDelete);
+            }
         }
     
         // Call fetchEvents function when the page loads
