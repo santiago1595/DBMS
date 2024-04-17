@@ -115,8 +115,42 @@ function populateEvents(events) {
         };
         actionCell.appendChild(joinButton); // Add button to cell
     });
-    }
-
+}
+    
+        // Function to add join buttons to event rows
+        function addJoinButtons() {
+            var eventRows = document.querySelectorAll("#eventsTableBody tr");
+            eventRows.forEach(function(row) {
+                var actionsCell = row.insertCell(-1); // Insert cell for actions at the end
+                var joinButton = document.createElement("button"); // Create a button for joining
+                joinButton.textContent = "Join"; // Set button text
+                joinButton.onclick = function() { joinEvent(row.event_id); }; // Define button action
+                actionsCell.appendChild(joinButton); // Add join button to cell
+            });
+        }
+    
+        // Function to add a comment for an event
+        function addComment(eventName) {
+            var comment = prompt("Enter your comment for " + eventName + ":");
+            if (comment) {
+                // Implement add comment functionality here
+                alert("Comment added: " + comment);
+            }
+        }
+    
+        // Function to delete a comment for an event
+        function deleteComment(eventName) {
+            var commentToDelete = prompt("Enter the comment you want to delete for " + eventName + ":");
+            if (commentToDelete) {
+                // Implement delete comment functionality here
+                alert("Comment deleted: " + commentToDelete);
+            }
+        }
+    
+        // Call fetchEvents function when the page loads
+        window.onload = function() {
+            fetchEvents();
+        };
     </script>
 </body>
 </html>
