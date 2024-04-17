@@ -14,38 +14,30 @@
 
 <body>
 
+    <!-- New nav bar settings -->
     <div class="navbar">
         <center>
             <button id="homeBtn" type="button" onclick="document.location='home.html'">Home</button>
             <button id="logoutBtn" type="button" onclick="document.location='index.html'">Log out</button>
-            <button id="createEventBtn" type="button" onclick="document.location='createEvent.html'">Create New
-                Event</button>
-            <button id="registerRSOBtn" type="button" onclick="document.location='createRSO.html'">Register New
-                Organization</button>
-            <button id="createUniversityBtn" type="button" onclick="document.location='createUniversity.html'">Create
-                University</button>
+            <button id="createEventBtn" type="button" onclick="document.location='createEvent.html'">Create New Event</button>
+            <button id="registerRSOBtn" type="button" onclick="document.location='createRSO.html'">Register New Organization</button>
+            <button id="createUniversityBtn" type="button" onclick="document.location='createUniversity.html'">Create University</button>
+            <button id="viewRSOBtn" type="button"onclick="document.location='viewRSO.html'">View RSO</button>
         </center>
     </div>
-
     <script>
-        // Check user role and show relevant navbar options
         const role = "admin"; // Replace with actual user role fetched from authentication
         const navbarBtns = document.querySelectorAll('.navbar button');
-
+    
         if (role === "student") {
             navbarBtns.forEach(btn => {
-                if (btn.id !== "homeBtn" && btn.id !== "logoutBtn") {
+                if (btn.id !== "homeBtn" && btn.id !== "logoutBtn" && btn.id !== "viewRSOBtn") {
                     btn.style.display = "none";
                 }
             });
         } else if (role === "admin") {
             navbarBtns.forEach(btn => {
-                if (btn.id !== "homeBtn" && btn.id !== "logoutBtn" && btn.id !== "createEventBtn" && btn.id !== "registerRSOBtn")
-                    btn.style.display = "none";
-            });
-        } else if (role === "superadmin") {
-            navbarBtns.forEach(btn => {
-                btn.style.display = "block";
+                btn.style.display = "vertical";
             });
         }
     </script>

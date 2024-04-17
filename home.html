@@ -53,6 +53,7 @@
                 <th>Event Name</th>
                 <th>Date</th>
                 <th>Description</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody id="eventsTableBody">
@@ -68,12 +69,25 @@
                 if (this.readyState == 4 && this.status == 200) {
                     // Update the table body with the fetched events
                     document.getElementById("eventsTableBody").innerHTML = this.responseText;
+                    addJoinButtons(); // Add join buttons after populating the table
                 }
             };
             xhttp.open("GET", "fetchEvents.php", true); // Replace "fetch_events.php" with the actual path to your PHP script
             xhttp.send();
         }
-
+    
+        // Function to add join buttons to event rows
+        function addJoinButtons() {
+            var eventRows = document.querySelectorAll("#eventsTableBody tr");
+            eventRows.forEach(function(row) {
+                var joinButtonCell = row.insertCell(-1); // Insert cell for join button at the end
+                var joinButton = document.createElement("button"); // Create a button
+                joinButton.textContent = "Join"; // Set button text
+                joinButton.onclick = function() { alert("Join " + row.cells[0].textContent); }; // Define button action
+                joinButtonCell.appendChild(joinButton); // Add button to cell
+            });
+        }
+    
         // Call fetchEvents function when the page loads
         window.onload = function() {
             fetchEvents();
