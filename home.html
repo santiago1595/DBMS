@@ -19,9 +19,30 @@
             <button id="createEventBtn" type="button" onclick="document.location='createEvent.html'">Create New Event</button>
             <button id="registerRSOBtn" type="button" onclick="document.location='createRSO.html'">Register New Organization</button>
             <button id="createUniversityBtn" type="button" onclick="document.location='createUniversity.html'">Create University</button>
+            <button id="viewRSOBtn" type="button" onclick="document.location='viewRSO.html'">View RSO</button>
         </center>
     </div>
-
+    <script>
+        const role = "admin"; // Replace with actual user role fetched from authentication
+        const navbarBtns = document.querySelectorAll('.navbar button');
+    
+        if (role === "student") {
+            navbarBtns.forEach(btn => {
+                if (btn.id !== "homeBtn" && btn.id !== "logoutBtn" && btn.id !== "viewRSOBtn") {
+                    btn.style.display = "none";
+                }
+            });
+        } else if (role === "admin") {
+            navbarBtns.forEach(btn => {
+                btn.style.display = "vertical";
+            });
+        } else if (role === "superadmin") {
+            navbarBtns.forEach(btn => {
+                btn.style.display = "vertical";
+            });
+        }
+    </script>
+    
     <!-- Table for the events -->
     <center>
         <h3>Current Events</h3>
@@ -31,6 +52,7 @@
             <tr>
                 <th>Event Name</th>
                 <th>Date</th>
+                <th>Description</th>
             </tr>
         </thead>
         <tbody id="eventsTableBody">

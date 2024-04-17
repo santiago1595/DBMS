@@ -1,21 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
     <link rel="stylesheet" href="styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
     <title>Create a New Event</title>
 </head>
 <body>
-<div class="navbar">
-    <center>
-        <button id="homeBtn" type="button" onclick="document.location='home.html'">Home</button>
-        <button id="logoutBtn" type="button" onclick="document.location='index.html'">Log out</button>
-        <button id="createEventBtn" type="button" onclick="document.location='createEvent.html'">Create New Event</button>
-        <button id="registerRSOBtn" type="button" onclick="document.location='createRSO.html'">Register New Organization</button>
-        <button id="createUniversityBtn" type="button" onclick="document.location='createUniversity.html'">Create University</button>
-    </center>
-</div>
+    <!-- New nav bar settings -->
+    <div class="navbar">
+        <center>
+            <button id="homeBtn" type="button" onclick="document.location='home.html'">Home</button>
+            <button id="logoutBtn" type="button" onclick="document.location='index.html'">Log out</button>
+            <button id="createEventBtn" type="button" onclick="document.location='createEvent.html'">Create New Event</button>
+            <button id="registerRSOBtn" type="button" onclick="document.location='createRSO.html'">Register New Organization</button>
+            <button id="createUniversityBtn" type="button" onclick="document.location='createUniversity.html'">Create University</button>
+            <button id="viewRSOBtn" type="button"onclick="document.location='viewRSO.html'">View RSO</button>
+        </center>
+    </div>
+    <script>
+        const role = "admin"; // Replace with actual user role fetched from authentication
+        const navbarBtns = document.querySelectorAll('.navbar button');
+    
+        if (role === "student") {
+            navbarBtns.forEach(btn => {
+                if (btn.id !== "homeBtn" && btn.id !== "logoutBtn" && btn.id !== "viewRSOBtn") {
+                    btn.style.display = "none";
+                }
+            });
+        } else if (role === "admin") {
+            navbarBtns.forEach(btn => {
+                btn.style.display = "vertical";
+            });
+        }
+    </script>
 
 <center>
     <h2>Create a New Event</h2>
@@ -25,7 +47,7 @@
             <input type="text" id="event_name" name="event_name"><br><br>
 
             <label for="event_date">Enter event date:</label><br>
-            <input type="text" id="event_date" name="event_date"><br><br>
+            <input type="text" id="event_date" name="event_date" pattern="\d{4}-\d{2}-\d{2}" placeholder="YYYY-MM-DD" required><br><br>            
 
             <label for="event_time">Enter event time:</label><br>
             <input type="text" id="event_time" name="event_time"><br><br>
@@ -54,7 +76,13 @@
         </form>
     </div>
 </center>
-
+<script>
+    $(function() {
+      $("#event_date").datepicker({
+        dateFormat: 'yyyy-mm-dd'
+      });
+    });
+  </script>
 <script>
     document.getElementById('eventForm').addEventListener('submit', function (event) {
         event.preventDefault(); // Prevent form submission
