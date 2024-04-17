@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <link rel="stylesheet" href="styles.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta charset="utf-8">
-        </style>
-        <center>
-            <h2>Register a New Organization</h2>
-        </center>
 
-    </head>
-    <body>
-            <!--New nav bar settings-->
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    </style>
+    <center>
+        <h2>Register a New Organization</h2>
+    </center>
+
+</head>
+
+<body>
+
     <div class="navbar">
         <center>
             <button id="homeBtn" type="button" onclick="document.location='home.html'">Home</button>
             <button id="logoutBtn" type="button" onclick="document.location='index.html'">Log out</button>
-            <button id="createEventBtn" type="button" onclick="document.location='createEvent.html'">Create New Event</button>
-            <button id="registerRSOBtn" type="button" onclick="document.location='createRSO.html'">Register New Organization</button>
-            <button id="createUniversityBtn" type="button" onclick="document.location='createUniversity.html'">Create University</button>
+            <button id="createEventBtn" type="button" onclick="document.location='createEvent.html'">Create New
+                Event</button>
+            <button id="registerRSOBtn" type="button" onclick="document.location='createRSO.html'">Register New
+                Organization</button>
+            <button id="createUniversityBtn" type="button" onclick="document.location='createUniversity.html'">Create
+                University</button>
         </center>
     </div>
 
@@ -35,8 +40,8 @@
             });
         } else if (role === "admin") {
             navbarBtns.forEach(btn => {
-                if(btn.id !== "homeBtn"&& btn.id !== "logoutBtn" && btn.id !== "createEventBtn" && btn.id !== "registerRSOBtn")
-                btn.style.display = "none";
+                if (btn.id !== "homeBtn" && btn.id !== "logoutBtn" && btn.id !== "createEventBtn" && btn.id !== "registerRSOBtn")
+                    btn.style.display = "none";
             });
         } else if (role === "superadmin") {
             navbarBtns.forEach(btn => {
@@ -44,25 +49,55 @@
             });
         }
     </script>
-        <center>
-            <div class="box1">
-                    
-                <form action="#" method="post">
-                    <label for="rsoName">Enter name of the organization:</label><br>
-                    <input type="text" id="rsoName" name="rsoName"><br><br>
+    <center>
+        <div class="box1">
 
-                    <label for="rsoUniversity">Enter name of the university:</label><br>
-                    <input type="text" id="rsoUniversity" name="rsoUniversity"><br><br>
+            <form id="rsoForm">
+                <label for="rsoName">Enter name of the organization:</label><br>
+                <input type="text" id="rsoName" name="rsoName"><br><br>
 
-                    <label for="rsoDescription">Enter the description of the organization:</label><br>
-                    <textarea type="text" id="rsoDescription" name="rsoDescription" style="width: 250px;"></textarea><br><br>
+                <label for="rsoDescription">Enter the description of the organization:</label><br>
+                <textarea type="text" id="rsoDescription" name="rsoDescription"
+                    style="width: 250px;"></textarea><br><br>
 
-                    <label for="userPass">Enter your Password:</label><br>
-                    <input type="password" id="password" name="password"><br><br>
+                <input type="submit" value="Register">
+            </form>
+        </div>
+    </center>
 
-                    <input type="submit" value="Register">
-                </form>
-            </div>
-        </center>
-    </body>
-    </html>
+    <script>
+        document.getElementById('rsoForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Gather form data
+            var formData = {
+                rsoName: document.getElementById('rsoName').value,
+                rsoDescription: document.getElementById('rsoDescription').value
+            };
+
+            // Send form data as JSON to createRSO.php using fetch API
+            fetch('createRSO.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    console.log(data); // Log response from PHP script
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('Error occurred while registering RSO: ' + error); // Show error message
+                });
+        });
+    </script>
+</body>
+
+</html>

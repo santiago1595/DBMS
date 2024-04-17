@@ -11,7 +11,7 @@
         <h2>Home</h2>
     </center>
 
-    <!--New nav bar settings-->
+    <!-- New nav bar settings -->
     <div class="navbar">
         <center>
             <button id="homeBtn" type="button" onclick="document.location='home.html'">Home</button>
@@ -22,80 +22,40 @@
         </center>
     </div>
 
-    <script>
-        // Check user role and show relevant navbar options
-        const role = "admin"; // Replace with actual user role fetched from authentication
-        const navbarBtns = document.querySelectorAll('.navbar button');
-
-        if (role === "student") {
-            navbarBtns.forEach(btn => {
-                if (btn.id !== "homeBtn" && btn.id !== "logoutBtn") {
-                    btn.style.display = "none";
-                }
-            });
-        } else if (role === "admin") {
-            navbarBtns.forEach(btn => {
-                if(btn.id !== "homeBtn"&& btn.id !== "logoutBtn" && btn.id !== "createEventBtn" && btn.id !== "registerRSOBtn")
-                btn.style.display = "none";
-            });
-        } else if (role === "superadmin") {
-            navbarBtns.forEach(btn => {
-                btn.style.display = "block";
-            });
-        }
-    </script>
-
-
-    <!--Table for the events-->
-    
+    <!-- Table for the events -->
     <center>
         <h3>Current Events</h3>
     </center>
-    <table>
+    <table id="eventsTable">
         <thead>
             <tr>
                 <th>Event Name</th>
                 <th>Date</th>
             </tr>
         </thead>
-        <tbody>
-            <?php
-            // Connect to your database
-            $conn = mysqli_connect("localhost", "username", "password", "database");
-
-            // Check connection
-            if (!$conn) {
-                die("Connection failed: " . mysqli_connect_error());
-            }
-
-            // SQL query to retrieve events
-            $sql = "SELECT event_name, event_date FROM events";
-
-            // Execute query
-            $result = mysqli_query($conn, $sql);
-
-            // Check if there are any rows returned
-            if (mysqli_num_rows($result) > 0) {
-                // Loop through each row and display event details in table rows
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo "<tr>";
-                    echo "<td>" . $row["event_name"] . "</td>";
-                    echo "<td>" . $row["event_date"] . "</td>";
-                    echo "</tr>";
-                }
-            } else {
-                echo "<tr><td colspan='2'>No events found</td></tr>";
-            }
-
-            // Close database connection
-            mysqli_close($conn);
-            ?>
+        <tbody id="eventsTableBody">
+            <!-- Table rows will be dynamically added here -->
         </tbody>
     </table>
+
+    <script>
+        // AJAX request to fetch events from the server
+        function fetchEvents() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    // Update the table body with the fetched events
+                    document.getElementById("eventsTableBody").innerHTML = this.responseText;
+                }
+            };
+            xhttp.open("GET", "fetchEvents.php", true); // Replace "fetch_events.php" with the actual path to your PHP script
+            xhttp.send();
+        }
+
+        // Call fetchEvents function when the page loads
+        window.onload = function() {
+            fetchEvents();
+        };
+    </script>
 </body>
 </html>
-<!--
-    Replace "localhost", "username", "password", 
-    and "database" with your actual database connection details. 
-    This example assumes you have a table named events with columns event_name and event_date in your database.
--->

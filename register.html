@@ -1,49 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <link rel="stylesheet" href="styles.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta charset="utf-8">
-        </style>
-    </head>
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+</head>
+<body>
     <center>
-
         <h2>Register</h2>
     </center>
     <div class="navbar">
         <center>
- 
-            <button type="buttom" 
-                    onclick="document.location='index.html'">Home</button>
-            <button type="buttom" 
-                    onclick="document.location='login.html'">Log in</button>
+            <button type="button" onclick="document.location='index.html'">Home</button>
+            <button type="button" onclick="document.location='login.html'">Log in</button>
         </center>
-     </div><br><br>
+    </div><br><br>
     <center>
         <div class="box1">
-                
-            <form action="#" method="post">
+            <form id="registrationForm">
                 <label for="userName">Enter name:</label><br>
-                <input type="text" id="userName" name="userName"><br><br>
+                <input type="text" id="userName" name="firstName"><br><br>
 
                 <label for="userLastName">Enter last name:</label><br>
-                <input type="text" id="userLastName" name="userLastName"><br><br>
+                <input type="text" id="userLastName" name="lastName"><br><br>
 
                 <label for="userPass">Enter Password:</label><br>
                 <input type="password" id="password" name="password"><br><br>
 
-                <label for="userUniversity">Enter your University:</label><br>
-                <input type="text" id="userUniversity" name="userUniversity"><br><br>
-
                 <label for="userEmail">Enter your email:</label><br>
-                <input type="text" id="userEmail" name="userEmail"><br><br>
-                
-                <select name="adminRoles" id="adminRoles">
+                <input type="text" id="userEmail" name="email"><br><br>
+
+                <select name="adminRoles" id="adminRoles" name="accountType">
                     <option value="Admin">Admin</option>
                     <option value="Student">Student</option>
                 </select><br><br>
+
                 <input type="submit" value="Register">
             </form>
         </div>
     </center>
-    </html>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Gather form data
+            var formData = {
+                email: document.getElementById('userEmail').value,
+                firstName: document.getElementById('userName').value,
+                lastName: document.getElementById('userLastName').value,
+                password: document.getElementById('password').value,
+                accountType: document.getElementById('adminRoles').value
+            };
+
+            // Send form data as JSON to register.php using XMLHttpRequest
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'register.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    alert(xhr.responseText); // Show response from server
+                    document.getElementById('registrationForm').reset(); // Reset form fields on success
+                } else {
+                    alert('Error: ' + xhr.responseText); // Show error message
+                }
+            };
+            xhr.send(JSON.stringify(formData)); // Send JSON data
+        });
+    </script>
+</body>
+</html>
