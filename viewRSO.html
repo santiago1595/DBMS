@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <link rel="stylesheet" href="styles.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta charset="utf-8">
-        <title>Home</title>
-    </head>
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>View All Registered Student Organizations</title>
+</head>
 <body>
     <center>
-        <h2>View All Register Student Organization</h2>
+        <h2>View All Registered Student Organizations</h2>
     </center>
 
     <!-- New nav bar settings -->
@@ -25,65 +25,75 @@
 
     <table id="rsoTable">
         <thead>
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Action</th>
-          </tr>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
         </thead>
         <tbody id="rsoTableBody">
-          <!-- Table rows will be dynamically added here -->
+            <!-- Table rows will be dynamically added here -->
         </tbody>
-      </table>
-      
+    </table>
+
     <script>
-        const role = "admin"; // Replace with actual user role fetched from authentication
-        const navbarBtns = document.querySelectorAll('.navbar button');
-    
-        if (role === "student") {
-            navbarBtns.forEach(btn => {
-                if (btn.id !== "homeBtn" && btn.id !== "logoutBtn" && btn.id !== "viewRSOBtn") {
-                    btn.style.display = "none";
+        // Function to join an RSO
+        function joinRSO(rso_id) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var response = JSON.parse(this.responseText);
+                    if (response.success) {
+                        alert("Successfully joined RSO.");
+                        // Optionally, you can update the UI to reflect the change after joining the RSO
+                    } else {
+                        alert("Error joining RSO: " + response.message);
+                    }
                 }
-            });
-        } else if (role === "admin") {
-            navbarBtns.forEach(btn => {
-                btn.style.display = "vertical";
-            });
-        } else if (role === "superadmin") {
-            navbarBtns.forEach(btn => {
-                btn.style.display = "vertical";
-            });
+            };
+            xhttp.open("GET", "joinRSO.php?rso_id=" + rso_id, true);
+            xhttp.send();
         }
-    </script>
-    <script>
-        // Sample RSO data (replace with your actual data)
-        var rsoData = [
-        { name: "RSO 1", category: "Category 1" },
-        { name: "RSO 2", category: "Category 2" },
-        { name: "RSO 3", category: "Category 1" },
-        // Add more RSO objects as needed
-        ];
-    
+
+        // Function to fetch RSOs from the server
+        function fetchRSOs() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    // Parse the JSON response
+                    var rsos = JSON.parse(this.responseText);
+                    // Populate the RSO table with the fetched data
+                    populateRSOs(rsos);
+                }
+            };
+            xhttp.open("GET", "fetchRSO.php", true);
+            xhttp.send();
+        }
+
         // Function to populate RSO table
-        function populateRSOs() {
-        var rsoTableBody = document.getElementById("rsoTableBody");
-        rsoData.forEach(function(rso) {
-            var row = rsoTableBody.insertRow();
-            var nameCell = row.insertCell(0);
-            var categoryCell = row.insertCell(1);
-            var actionCell = row.insertCell(2); // New cell for action
-            nameCell.textContent = rso.name;
-            categoryCell.textContent = rso.category;
-            var joinButton = document.createElement("button"); // Create a button
-            joinButton.textContent = "Join"; // Set button text
-            joinButton.onclick = function() { alert("Join " + rso.name); }; // Define button action
-            actionCell.appendChild(joinButton); // Add button to cell
-        });
+        function populateRSOs(rsos) {
+            var rsoTableBody = document.getElementById("rsoTableBody");
+            rsoTableBody.innerHTML = ""; // Clear existing rows
+            rsos.forEach(function(rso) {
+                var row = rsoTableBody.insertRow();
+                var nameCell = row.insertCell(0);
+                var descriptionCell = row.insertCell(1);
+                var actionCell = row.insertCell(2); // New cell for action
+                nameCell.textContent = rso.name;
+                descriptionCell.textContent = rso.rso_description;
+                var joinButton = document.createElement("button"); // Create a button
+                joinButton.textContent = "Join"; // Set button text
+                joinButton.onclick = function() {
+                    joinRSO(rso.rso_id); // Call joinRSO function with rso_id
+                };
+                actionCell.appendChild(joinButton); // Add button to cell
+            });
         }
-    
-        // Call the function to populate RSOs when the page loads
-        window.onload = populateRSOs;
+
+        // Call fetchRSOs function when the page loads
+        window.onload = function() {
+            fetchRSOs();
+        };
     </script>
 </body>
 </html>

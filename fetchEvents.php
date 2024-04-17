@@ -10,10 +10,15 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     // Step 4: Display the data on the webpage
     while($row = $result->fetch_assoc()) {
-        echo "Event Name: " . $row["event_name"]. " - Date: " . $row["time"]. "<br>";
+        echo "<tr>";
+        echo "<td>" . $row["event_name"]. "</td>";
+        echo "<td>" . $row["time"]. "</td>";
+        echo "<td>" . $row["description"]. "</td>";
+        // You can add additional columns if needed
+        echo "</tr>";
     }
 } else {
-    echo "0 results";
+    echo "<tr><td colspan='4'>No events found</td></tr>";
 }
 
 // Close the connection
